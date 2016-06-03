@@ -8,11 +8,12 @@ Insert a stock symbol and company name into the cordurn.stock table
 Examples:
 CALL insert_stock('HAS', 'Hasbro Inc', @out_stock_id)
 CALL insert_stock('NFLX', 'Netflix Inc', @out_stock_id);
+CALL insert_stock('FIVE', 'Five Below Inc', @out_stock_id);
 */
 CREATE PROCEDURE insert_stock 
 (
-	symbol VARCHAR(5),
-	company_name VARCHAR(128),
+	IN symbol VARCHAR(5),
+	IN company_name VARCHAR(128),
 	OUT out_stock_id INT
 ) 
 BEGIN

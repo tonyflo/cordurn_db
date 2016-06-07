@@ -1,0 +1,27 @@
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS insert_ohlc //
+
+/*
+Insert open, high, low, and close data into the cordurn.ohlc table
+
+Examples:
+CALL insert_ohlc(3433, '2001-01-02', 83.24986, 84.499846, 81.374873, 83.24986, 26.265127, 3334500)
+*/
+CREATE PROCEDURE insert_ohlc 
+(
+	IN stock_id INT,
+	IN date DATE,
+	IN open DECIMAL(13,6) UNSIGNED,
+	IN high DECIMAL(13,6) UNSIGNED,
+	IN low DECIMAL(13,6) UNSIGNED,
+	IN close DECIMAL(13,6) UNSIGNED,
+	IN adj_close DECIMAL(13,6) UNSIGNED,
+	IN volume INT UNSIGNED
+)
+BEGIN
+	INSERT INTO cordurn.ohlc(stock_id, date, open, high, low, close, adj_close, volume)
+	VALUES(stock_id, date, open, high, low, close, adj_close, volume);
+	SELECT ROW_COUNT();
+END //
+DELIMITER ;

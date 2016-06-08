@@ -3,7 +3,7 @@ DROP TABLE cordurn.earnings_release
 */
 CREATE TABLE cordurn.earnings_release
 (
-	earnings_id INT NOT NULL AUTO_INCREMENT UNIQUE,
+	earnings_id INT AUTO_INCREMENT UNIQUE NOT NULL,
 	stock_id INT NOT NULL,
 	release_date DATE NOT NULL,
 	release_time VARCHAR(25) NOT NULL,

@@ -3,8 +3,10 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS get_symbols_with_ohlc //
 
 /*
-Description: Returns symbols and their id that have price DATA
-Example: CALL get_symbols_with_ohlc;
+Returns symbols and their id that have price DATA
+
+Example:
+CALL get_symbols_with_ohlc;
 */
 CREATE PROCEDURE get_symbols_with_ohlc()
 BEGIN

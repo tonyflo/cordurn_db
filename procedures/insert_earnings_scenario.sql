@@ -10,7 +10,7 @@ scenario is defined by buying low before a release and selling high after a rele
 Earnings releases with 'Time Not Supplied' are ignored for now.
 
 Example:
-CALL insert_earnings_scenario(405)
+CALL insert_earnings_scenario(6820)
 */
 CREATE PROCEDURE insert_earnings_scenario
 (
@@ -31,12 +31,12 @@ BEGIN
 	WHERE ohlc.stock_id = p_stock_id
 	ORDER BY date ASC;
 	
-	-- insert into earnings_scenario(earnings_id, before_ohlc_id, after_ohlc_id, bcs, wcs)
+	insert into earnings_scenario(earnings_id, before_ohlc_id, after_ohlc_id, bcs, wcs)
 	select earnings_id,
 		before_ohlc_id,
 		after_ohlc_id,
-		(after_high - before_low) / before_low AS bcs,
-		(after_low - before_high) / before_high AS wcs
+		CAST((after_high - before_low) / before_low as DECIMAL(10,6)) AS bcs,
+		CASt((after_low - before_high) / before_high as DECIMAL(10,6)) AS wcs
 	from 
 		(SELECT er.earnings_id,
 			er.release_date,
@@ -49,8 +49,10 @@ BEGIN
 		FROM earnings_release er
 		INNER JOIN ohlc after_ohlc
 			ON er.stock_id = after_ohlc.stock_id
+			AND er.release_time != 'After Market Close'
+			AND er.release_time != 'Time Not Supplied'
 			AND (er.release_time = 'Before Market Open'
-				 or TIME(STR_TO_DATE(er.release_time, '%h:%i:%s')) <= CAST('12:00:00' AS TIME))
+				 or TIME(STR_TO_DATE(er.release_time, '%T')) <= CAST('12:00:00' AS TIME))
 			AND after_ohlc.date = er.release_date
 		inner join ohlc before_ohlc
 			on er.stock_id = before_ohlc.stock_id
@@ -72,8 +74,10 @@ BEGIN
 		FROM earnings_release er
 		INNER JOIN ohlc before_ohlc
 			ON er.stock_id = before_ohlc.stock_id
+			AND er.release_time != 'Before Market Open'
+			AND er.release_time != 'Time Not Supplied'
 			AND (er.release_time = 'After Market Close'
-			 	or TIME(STR_TO_DATE(er.release_time, '%h:%i:%s')) > CAST('12:00:00' AS TIME))
+			 	or TIME(STR_TO_DATE(er.release_time, '%T')) > CAST('12:00:00' AS TIME))
 			AND before_ohlc.date = er.release_date
 		inner join ohlc after_ohlc
 			on er.stock_id = after_ohlc.stock_id

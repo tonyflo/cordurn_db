@@ -1,5 +1,6 @@
 /*
 DROP TABLE cordurn.earnings_scenario
+select * from earnings_scenario
 */
 CREATE TABLE cordurn.earnings_scenario
 (

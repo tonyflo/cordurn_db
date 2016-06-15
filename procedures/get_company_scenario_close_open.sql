@@ -6,7 +6,7 @@ DROP PROCEDURE IF EXISTS get_company_scenario_close_open //
 Gets the prior close and after open and percent change given a stock_id
 
 Example:
-CALL get_company_scenario_close_open(6820)
+CALL get_company_scenario_close_open(3568)
 */
 CREATE PROCEDURE get_company_scenario_close_open
 (
